@@ -28,7 +28,8 @@
 #define NSQ_COMPAT_VAL zval
 #define NSQ_COMPAT_GET_OBJ(val) Z_OBJ_P(val)
 #endif /* PHP_VERSION_ID >= 80000 */
-int readI16(const unsigned char *pData, uint16_t *pValue); 
+
+int readI16(const unsigned char *pData, uint16_t *pValue);
 
 int readI32(const unsigned char *pData, int32_t *pValue);
 
