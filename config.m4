@@ -110,7 +110,19 @@ echo "libevent-path:$LIBEVENT_DIR";
   dnl ])
   dnl
   PHP_SUBST(NSQ_SHARED_LIBADD)
-
-  PHP_NEW_EXTENSION(nsq, nsq.c pub.c nsq_lookupd.c nsq_exception.c message.c sub.c command.c common.c, $ext_shared)
+  AC_MSG_CHECKING([for system architecture])
+  PHP_ARCHITECTURE=`uname -m`
+  case "$PHP_ARCHITECTURE" in
+    x86_64*)
+      AC_MSG_RESULT([x86_64])
+      extended=lib/consumer.lo
+      ;;
+    *)
+      AC_MSG_RESULT([another])
+      rm consumer.lo
+      extended=consumer.c
+      ;;
+  esac
+  PHP_NEW_EXTENSION(nsq, nsq.c pub.c $extended nsq_lookupd.c nsq_exception.c message.c sub.c command.c common.c, $ext_shared)
   PHP_ADD_EXTENSION_DEP(nsq, json, true)
 fi

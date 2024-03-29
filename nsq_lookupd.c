@@ -30,6 +30,7 @@
 #include "event2/thread.h"
 
 #include <event.h>
+#include "consumer.h"
 
 extern void error_handling(char *message);
 
@@ -68,9 +69,10 @@ PHP_METHOD (NsqLookupd, __construct) {
             Z_PARAM_ZVAL(address)
     ZEND_PARSE_PARAMETERS_END();
     zend_update_property(Z_OBJCE_P(self),  NSQ_COMPAT_OBJ_P(self), ZEND_STRL("address"), address);
+    lookup_command();
 }
 
-void FinshCallback(struct evhttp_request *remote_rsp, void *arg) {
+void FinishCallback(struct evhttp_request *remote_rsp, void *arg) {
     result *re = arg;
     const int code = remote_rsp ? evhttp_request_get_response_code(remote_rsp) : 0;
     struct evbuffer *buf = evhttp_request_get_input_buffer(remote_rsp);
@@ -132,7 +134,7 @@ char *request(char *url) {
     result * re  = (result * ) emalloc ( sizeof(result) );
     re->base = base;
 
-    struct evhttp_request *request = evhttp_request_new(FinshCallback, re);
+    struct evhttp_request *request = evhttp_request_new(FinishCallback, re);
     //evhttp_request_set_error_cb(request, RequestErrorCallback);
 
     const char *host = evhttp_uri_get_host(uri);
