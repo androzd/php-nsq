@@ -30,7 +30,6 @@
 #include "event2/thread.h"
 
 #include <event.h>
-#include "consumer.h"
 
 extern void error_handling(char *message);
 
@@ -69,7 +68,6 @@ PHP_METHOD (NsqLookupd, __construct) {
             Z_PARAM_ZVAL(address)
     ZEND_PARSE_PARAMETERS_END();
     zend_update_property(Z_OBJCE_P(self),  NSQ_COMPAT_OBJ_P(self), ZEND_STRL("address"), address);
-    lookup_command();
 }
 
 void FinishCallback(struct evhttp_request *remote_rsp, void *arg) {

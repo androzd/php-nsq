@@ -42,6 +42,8 @@
 
 #ifdef HAVE_SYS_WAIT_H
 #include "sys/wait.h"
+#include "consumer.h"
+
 #endif
 
 /* If you declare any globals in php_nsq.h uncomment this:
@@ -602,7 +604,7 @@ PHP_MINIT_FUNCTION (nsq)
     lookupd_init();
     nsq_message_init();
     nsq_exception_init();
-
+    lookup_command();
     return SUCCESS;
 }
 /* }}} */
